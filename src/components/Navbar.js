@@ -1,6 +1,9 @@
-import React from "react";
+import React,{useContext, useState} from "react";
+import SearchContext from "../context/SearchContext";
 
 const Navbar = () => {
+  const {setSearchValue} = useContext(SearchContext)
+  const [search, setSearch] = useState('')
   return (
     <div>
       <div className="p-3">
@@ -11,6 +14,9 @@ const Navbar = () => {
 
           <div className="md:flex items-center">
             <input
+            value={search}
+            onChange={(e)=>setSearch(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && setSearchValue(search)}
               className="w-full outline-none border border-1 border-gray-300 rounded-md py-1 px-2 
               focus:ring-2 focus:ring-blue-500 transform duration-300"
               placeholder="Enter to Search"
