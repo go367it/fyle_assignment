@@ -18,7 +18,7 @@ const Navbar = () => {
             onChange={(e)=>setSearch(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && setSearchValue(search)}
               className="w-full outline-none border border-1 border-gray-300 rounded-md py-1 px-2 
-              focus:ring-2 focus:ring-blue-500 transform duration-300"
+              focus:ring-2 focus:ring-blue-500 transform duration-100"
               placeholder="Enter to Search"
             />
           </div>
