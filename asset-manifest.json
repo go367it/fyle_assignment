@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/fyle_assignment/static/css/main.669aed91.css",
+    "main.js": "/fyle_assignment/static/js/main.1cd29d31.js",
+    "index.html": "/fyle_assignment/index.html",
+    "main.669aed91.css.map": "/fyle_assignment/static/css/main.669aed91.css.map",
+    "main.1cd29d31.js.map": "/fyle_assignment/static/js/main.1cd29d31.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.669aed91.css",
+    "static/js/main.1cd29d31.js"
+  ]
+}
