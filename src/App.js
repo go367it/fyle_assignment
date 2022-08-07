@@ -12,7 +12,7 @@ function App() {
       <SearchProvider>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Homepage />} />
+          <Route path="/fyle_assignment/" element={<Homepage />} />
         </Routes>
       </SearchProvider>
     </div>
