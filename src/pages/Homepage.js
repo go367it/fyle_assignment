@@ -11,10 +11,13 @@ const Homepage = () => {
   const [user, setUser] = useState({}); // state for handling the user details
   const [repos, setRepos] = useState([]); // state for handling the state of repos
   const [loading, setLoading] = useState(true); // state for handling the loading state
-  const [page, setPage] = useState(1) // state for handling page number for repo list
+  const [page, setPage] = useState(1); // state for handling page number for repo list
+  const [pageLimit, setPageLimit] = useState(6); // state for no.of repos per page
 
+  // when the components loads or the searchValue is updated
   useEffect(() => {
     if (searchValue.length > 0) {
+      setPage(1)
       setLoading(true);
       cogoToast.loading("Loading ...");
       // config user data without repos
@@ -24,7 +27,7 @@ const Homepage = () => {
       };
       // config for user repos
       const config1 = {
-        url: `https://api.github.com/users/${searchValue}/repos?page=${page}&per_page=4`,
+        url: `https://api.github.com/users/${searchValue}/repos?page=1&per_page=${pageLimit}`,
         method: "get",
       };
       axios(config)
@@ -51,14 +54,69 @@ const Homepage = () => {
         });
     }
   }, [searchValue]);
+
+  // when page down button is clicked
+  const pageDec = () => {
+    if (page !== 1) {
+      let number = page;
+      number--;
+      const config1 = {
+        url: `https://api.github.com/users/${searchValue}/repos?page=${number}&per_page=${pageLimit}`,
+        method: "get",
+      };
+      // calling for user repos
+      axios(config1)
+        .then((response) => {
+          console.log(response.data);
+          if (response.data.length === 0) {
+            cogoToast.info("No repos!");
+          }
+          setRepos(response.data);
+          setPage(number);
+        })
+        .catch((err) => {
+          console.log(err);
+          cogoToast.error("User not there!");
+        });
+    } else {
+      cogoToast.info("You are at page 1!");
+    }
+  };
+
+  // when page up button is clicked
+  const pageInc = () => {
+    cogoToast.loading("Loading repos ...");
+    let number = page;
+    number++;
+    const config1 = {
+      url: `https://api.github.com/users/${searchValue}/repos?page=${number}&per_page=${pageLimit}`,
+      method: "get",
+    };
+    // calling for user repos
+    axios(config1)
+      .then((response) => {
+        console.log(response.data);
+        if (response.data.length !== 0) {
+          setRepos(response.data);
+          setPage(number);
+        } else {
+          cogoToast.info("No repos!");
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        cogoToast.error("User not there!");
+      });
+  };
+
   return (
     <div className="p-4 xl:px-80">
       {loading ? (
-        "Type to search in search bar"
+        <div className="w-full p-4 bg-blue-50 border text-blue-600 rounded-md"> Type to search in the Search Field</div>
       ) : (
         <>
           {/* for showing details of user  */}
-          <div className="flex space-x-10 py-6">
+          <div className="sm:flex space-x-10 py-6">
             <img
               alt=""
               className="h-72 w-72 ring-2 ring-offset-1 ring-gray-300 rounded-full"
@@ -99,11 +157,16 @@ const Homepage = () => {
           {/* for pagination */}
           <div className="flex justify-center items-center w-full mt-6">
             <span className="flex items-center justify-around divide-x-2 border rounded-md">
-              <button className="w-full p-2">
+              <button className="w-full p-2" onClick={() => pageDec()}>
                 <ChevronLeftIcon className="w-5 h-5 text-center text-gray-400  hover:text-blue-500" />
               </button>
-              <div className="text-center text-gray-600 w-full py-2 px-4">{page}</div>
-              <button className="w-full p-2 flex justify-end">
+              <div className="text-center text-gray-600 w-full py-2 px-4">
+                {page}
+              </div>
+              <button
+                className="w-full p-2 flex justify-end"
+                onClick={() => pageInc()}
+              >
                 <ChevronRightIcon className="w-5 h-5 text-gray-400  hover:text-blue-500" />
               </button>
             </span>
